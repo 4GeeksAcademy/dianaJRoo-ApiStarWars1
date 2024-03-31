@@ -41,15 +41,17 @@ def handle_hello():
 
     users = User.query.all() # SELECT * from users;
 
-    return jsonify([ person.serialize() for person in users ]), 200
+    return jsonify([ user.serialize() for user in users ]), 200
 
 @app.route('/people', methods=['GET'])
 def get_people():
-    people = People.query.all()
-    return jsonify([person.serialize() for person in people])
+
+    peoples = People.query.all()
+    return jsonify([people.serialize() for people in peoples])
 
 @app.route('/people/<int:people_id>', methods=['GET'])
 def get_person(people_id):
+
     person = People.query.get(people_id)
     if person:
         return jsonify(person.serialize())
@@ -58,11 +60,13 @@ def get_person(people_id):
 
 @app.route('/planets', methods=['GET'])
 def get_planets():
+
     planets = Planet.query.all()
     return jsonify([planet.serialize() for planet in planets])
 
 @app.route('/planets/<int:planet_id>', methods=['GET'])
 def get_planet(planet_id):
+    
     planet = Planet.query.get(planet_id)
     if planet:
         return jsonify(planet.serialize())
