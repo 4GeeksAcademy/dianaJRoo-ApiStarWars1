@@ -22,7 +22,6 @@ class People(db.Model):
      __tablename__ = "people"
      id = db.Column(db.Integer, primary_key=True)
      name = db.Column(db.String(120), unique=True, nullable=False)
-     last_name = db.Column(db.String(120), unique=True, nullable=False)
      eyes_color = db.Column(db.String(120), unique=True, nullable=False)
 
 
@@ -30,14 +29,41 @@ class People(db.Model):
         self.name = name
         self.eyes_color = eyes_color
 
+
      def __repr__(self):
-        return f'<People {self.name, self.eyes_color}>'
+        return f'<People {self.name}>'
+
 
      def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "eyes_color": self.eyes_color
-            
-            # do not serialize the password, its a security breach
-        }       
+        }
+
+class Planet(db.Model):
+     __tablename__ = "planet"
+     id = db.Column(db.Integer, primary_key=True)
+     name = db.Column(db.String(120), unique=True, nullable=False)
+     population = db.Column(db.Interger, unique=True, nullable=False)
+
+     def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "population": self.population
+        }
+
+
+class Favorites(db.Model):
+     __tablename__ = "favorites"
+     id = db.Column(db.Integer, primary_key=True)
+
+     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+     user = db.relationship(User)
+
+     people_id = db.Column(db.Integer, db.ForeignKey('people.id'))
+     people = db.relationship(People)
+
+     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
+     planet = db.relationship(Planet)  
